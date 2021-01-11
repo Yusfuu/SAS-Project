@@ -37,12 +37,12 @@ int main(int argc, char * argv[]) {
   int winnerPos, loserPos, round;
 
   void getNumberOfCandidates() {
-    printf("\t--> Enter Number of Candidate : ");
+    printf("\n\t--> Enter Number of Candidate : ");
     scanf("%d", & numberOfCandidate);
   }
 
   void getNumberOfVoters() {
-    printf("\t--> Enter Number of Voters : ");
+    printf("\n\t--> Enter Number of Voters : ");
     scanf("%d", & numberOfVoters);
   }
 
@@ -68,11 +68,16 @@ int main(int argc, char * argv[]) {
   void print_list() {
     int i;
     system("cls");
+    printf("\t=========================================\n\n");
     printf("\t|\tList of Candidates Round %d\t|\n\n", round);
+    printf("\t=========================================\n\n\n");
+
     for (i = 0; i < numberOfCandidate; i++) {
-      printf("\tVote for Candidate %s \t No.  %d nv : %d \n\n", candidate[i].name, i + 1, candidate[i].numberOfVotes);
+      printf("\t_________________________________________\n\n");
+      printf("\t|  Vote for Candidate %s \t No. %d  |\n", candidate[i].name, i + 1);
+      //printf("nv:%d",candidate[i].numberOfVotes);
     }
-    printf("\n\n");
+    printf("\t_________________________________________\n\n");
   }
 
   void resetNumberOfVotes() {
