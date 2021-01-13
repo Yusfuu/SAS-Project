@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX 30
 
 struct president
@@ -14,6 +15,7 @@ struct voter
 };
 
 struct president candidate[MAX];
+struct president candidateAdmis[MAX];
 struct voter _voter[MAX];
 
 void create_candidate(int count)
@@ -69,7 +71,6 @@ int main(int argc, char *argv[])
         printf("\n\t\t* minimal number of voters is 10 *\n\n");
         getNumberOfVoters();
     }
-
     system("cls");
 
     create_candidate(numberOfCandidate);
@@ -99,28 +100,62 @@ int main(int argc, char *argv[])
         }
         numberOfCandidate--;
     }
-    //round 1
-    int i = 0, j, voteNumber;
-    while (i < numberOfVoters)
-    {
-        print_list();
-        printf(" --> I'm Voter %s I vote for the candidate No : ", _voter[i].name);
-        scanf("%d", &voteNumber);
-        if (voteNumber > 0 && voteNumber <= numberOfCandidate)
-        {
-            candidate[voteNumber - 1].numberOfVotes++;
-            i++;
-        }
-    }
 
-    for (j = 0; j < numberOfCandidate; j++)
+    void resetNumberOfVotes()
     {
-        float percent = (float)candidate[j].numberOfVotes / numberOfVoters * 100;
-        if (percent < 15)
+        int i;
+        for (i = 0; i < numberOfCandidate; i++)
         {
-            removeCandidate(j);
+            candidate[i].numberOfVotes = 0;
         }
     }
+    //round 1
+    int cpt;
+    do
+    {
+        cpt = 0;
+        int i = 0, voteNumber;
+        while (i < numberOfVoters)
+        {
+            print_list();
+            printf(" --> I'm Voter %s I vote for the candidate No : ", _voter[i].name);
+            scanf("%d", &voteNumber);
+            if (voteNumber > 0 && voteNumber <= numberOfCandidate)
+            {
+                candidate[voteNumber - 1].numberOfVotes++;
+                i++;
+            }
+        }
+
+        int remaining = 0, j;
+        for (j = 0; j < numberOfCandidate; j++)
+        {
+            if (candidate[0].numberOfVotes == candidate[j + 1].numberOfVotes)
+            {
+                cpt++;
+            }
+        }
+
+        if (cpt != numberOfCandidate - 1)
+        {
+            for (j = 0; j < numberOfCandidate; j++)
+            {
+                if ((float)candidate[j].numberOfVotes / numberOfVoters * 100 >= 15)
+                {
+                    candidateAdmis[remaining] = candidate[j];
+                    remaining++;
+                }
+            }
+
+            numberOfCandidate = remaining;
+            for (j = 0; j < numberOfCandidate; j++)
+            {
+                candidate[j] = candidateAdmis[j];
+            }
+            
+        }
+        resetNumberOfVotes();
+    } while (cpt == numberOfCandidate - 1);
 
     //round 1
 }
